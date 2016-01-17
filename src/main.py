@@ -23,3 +23,10 @@ def similarity(xi, xj, sigma=1):
     """
 
     return math.exp(-(np.linalg.norm(np.subtract(xi, xj))) / math.pow(sigma, 2))
+
+def construct_epsilon_graph(X):
+    """
+    Construit l'epsilon-graph associé aux données de l'IRIS
+    """
+
+    return [[similarity(xi, xj) for xi in X] for xj in X]
