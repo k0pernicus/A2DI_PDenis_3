@@ -8,7 +8,7 @@ from sklearn import datasets
 
 def load_iris_data():
     """
-    Méthode permettant de charger en mémoire les données IRIS, contenues dans scikit learn.
+    Fonction permettant de charger en mémoire les données IRIS, contenues dans scikit learn.
     """
 
     iris = datasets.load_iris()
