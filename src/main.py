@@ -2,6 +2,8 @@
 
 import numpy as np
 import math
+import random
+
 from sklearn import datasets
 
 def load_iris_data():
