@@ -65,3 +65,15 @@ def choose_3_points_from(X, C):
     # print("X {}".format(X))
 
     return X
+
+def compute_y_0():
+
+    # Initialisation du vecteur y_0 (les 3 premières du X modifié dans
+    # choose_3_points_from)
+    y_0 = [[1,0,0], [0,1,0], [0,0,1]]
+
+    # Ajout des valeurs nulles
+    for i in range(0, len(X) - len(y_0)):
+        y_0.append([0,0,0])
+
+    return y_0
