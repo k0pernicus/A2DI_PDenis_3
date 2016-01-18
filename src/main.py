@@ -89,3 +89,7 @@ def iterative_harmonic_algorithm(X, C):
     new_X = choose_3_points_from(X, C)
     # Construction de y_0
     y_0 = compute_y_0()
+
+if __name__ == '__main__':
+    X,C = load_iris_data()
+    iterative_harmonic_algorithm(X,C)
