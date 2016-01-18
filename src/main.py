@@ -77,3 +77,15 @@ def compute_y_0():
         y_0.append([0,0,0])
 
     return y_0
+
+def iterative_harmonic_algorithm(X, C):
+    """
+    Fonction permettant de faire tourner l'algorithme itératif harmonique, afin de prédire les labels inconnus
+    """
+
+    # Construction de l'epsilon-graph
+    epsilon_graph = construct_epsilon_graph(X)
+    # Choix de 3 points aléatoires -> new_X
+    new_X = choose_3_points_from(X, C)
+    # Construction de y_0
+    y_0 = compute_y_0()
