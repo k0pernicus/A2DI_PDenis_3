@@ -106,10 +106,24 @@ def iterative_harmonic_algorithm(X, C):
 
     # Construction de l'epsilon-graph
     epsilon_graph = construct_epsilon_graph(X)
+    # Calcul de la matrice des degrés
+    degree_matrix = construct_degree_matrix(epsilon_graph)
     # Choix de 3 points aléatoires -> new_X
     new_X = choose_3_points_from(X, C)
     # Construction de y_0
     y_0 = compute_y_0()
+    y_i_b = np.zeros((len(y_0), 3))
+
+    y_0_0 = [1,0,0]
+    y_0_1 = [0,1,0]
+    y_0_2 = [0,0,1]
+
+    while not np.array_equal(y_0,y_i_b):
+        y_i_b = y_0
+        y_0 = iterate_over_y(epsilon_graph, degree_matrix, y_0)
+        y_0[0] = y_0_0
+        y_0[1] = y_0_1
+        y_0[2] = y_0_2
 
 if __name__ == '__main__':
     X,C = load_iris_data()
