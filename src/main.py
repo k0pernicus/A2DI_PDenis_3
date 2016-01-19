@@ -37,11 +37,13 @@ def construct_degree_matrix(epsilon_graph):
         i += 1
 
     return degree_matrix
+
+def construct_epsilon_graph(X, epsilon = 0.5):
     """
     Construit l'epsilon-graph associé aux données de l'IRIS
     """
 
-    return [[similarity(xi, xj) for xi in X] for xj in X]
+    return [[(1 if (similarity(xi, xj) > epsilon) else 0) for xi in X] for xj in X]
 
 def choose_3_points_from(X, C):
     """
