@@ -92,6 +92,13 @@ def compute_y_0():
 
     return y_0
 
+def iterate_over_y(epsilon_graph, degree_matrix, y_i):
+    """
+    Fonction permettant d'itérer sur le vecteur y (jusqu'à convergence)
+    """
+
+    return np.dot(np.dot(np.linalg.inv(degree_matrix), epsilon_graph), y_i)
+
 def iterative_harmonic_algorithm(X, C):
     """
     Fonction permettant de faire tourner l'algorithme itératif harmonique, afin de prédire les labels inconnus
