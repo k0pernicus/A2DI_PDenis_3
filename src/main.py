@@ -24,7 +24,19 @@ def similarity(xi, xj, sigma=1):
 
     return math.exp(-(np.linalg.norm(np.subtract(xi, xj))) / math.pow(sigma, 2))
 
-def construct_epsilon_graph(X):
+def construct_degree_matrix(epsilon_graph):
+    """
+    """
+
+    degree_matrix = np.zeros((len(epsilon_graph), len(epsilon_graph)))
+
+    i = 0
+    while i < len(epsilon_graph):
+        line = epsilon_graph[i]
+        degree_matrix[i,i] = np.sum(line)
+        i += 1
+
+    return degree_matrix
     """
     Construit l'epsilon-graph associé aux données de l'IRIS
     """
