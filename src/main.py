@@ -3,8 +3,13 @@
 import numpy as np
 import math
 import random
+import sys
 
 from sklearn import datasets
+
+global r_0
+global r_1
+global r_2
 
 def load_iris_data():
     """
@@ -33,7 +38,11 @@ def construct_degree_matrix(epsilon_graph):
     i = 0
     while i < len(epsilon_graph):
         line = epsilon_graph[i]
-        degree_matrix[i,i] = np.sum(line)
+        count = 0
+        for j in range(0, len(line)):
+            if line[j] != 0:
+                count+=1
+        degree_matrix[i,i] = count
         i += 1
 
     return degree_matrix
@@ -43,7 +52,7 @@ def construct_epsilon_graph(X, epsilon = 0.5):
     Construit l'epsilon-graph associé aux données de l'IRIS
     """
 
-    return [[(1 if (similarity(xi, xj) > epsilon) else 0) for xi in X] for xj in X]
+    return [[(similarity(xi, xj) if (similarity(xi, xj) > epsilon) else 0) for xi in X] for xj in X]
 
 def choose_3_points_from(X, C):
     """
@@ -51,44 +60,29 @@ def choose_3_points_from(X, C):
     inférieure à l'autre
     """
 
+    global r_0
+    global r_1
+    global r_2
+
     # Génère des nombres aléatoires, chacun dans des intervalles permettant
     # de choisir 1 point pour chaque classe
     r_0 = random.randrange(0, 50)
     r_1 = random.randrange(50, 100)
     r_2 = random.randrange(100, 150)
 
-    # Prendre les valeurs -> vecteur X
-    c_0 = X[r_0]
-    c_1 = X[r_1]
-    c_2 = X[r_2]
-
-    # print("c_0 {}".format(c_0))
-    # print("c_1 {}".format(c_1))
-    # print("c_2 {}".format(c_2))
-
-    # Suppression des valeurs
-    X = np.delete(X, r_0, 0)
-    X = np.delete(X, r_1, 0)
-    X = np.delete(X, r_2, 0)
-
-    # Ajout des valeurs dans les 3 premières positions du nouveau vecteur X
-    X = np.insert(X, 0, c_0, axis=0)
-    X = np.insert(X, 1, c_1, axis=0)
-    X = np.insert(X, 2, c_2, axis=0)
-
-    # print("X {}".format(X))
-
-    return X
-
 def compute_y_0():
+
+    global r_0
+    global r_1
+    global r_2
 
     # Initialisation du vecteur y_0 (les 3 premières du X modifié dans
     # choose_3_points_from)
-    y_0 = [[1,0,0], [0,1,0], [0,0,1]]
+    y_0 = np.zeros((150, 3))
 
-    # Ajout des valeurs nulles
-    for i in range(0, len(X) - len(y_0)):
-        y_0.append([0,0,0])
+    y_0[r_0] = [1,0,0]
+    y_0[r_1] = [0,1,0]
+    y_0[r_2] = [0,0,1]
 
     return y_0
 
@@ -104,12 +98,16 @@ def iterative_harmonic_algorithm(X, C):
     Fonction permettant de faire tourner l'algorithme itératif harmonique, afin de prédire les labels inconnus
     """
 
+    global r_0
+    global r_1
+    global r_2
+
     # Construction de l'epsilon-graph
     epsilon_graph = construct_epsilon_graph(X)
     # Calcul de la matrice des degrés
-    degree_matrix = construct_degree_matrix(epsilon_graph)
     # Choix de 3 points aléatoires -> new_X
-    new_X = choose_3_points_from(X, C)
+    choose_3_points_from(X, C)
+    degree_matrix = construct_degree_matrix(epsilon_graph)
     # Construction de y_0
     y_0 = compute_y_0()
     y_i_b = np.zeros((len(y_0), 3))
@@ -121,9 +119,20 @@ def iterative_harmonic_algorithm(X, C):
     while not np.array_equal(y_0,y_i_b):
         y_i_b = y_0
         y_0 = iterate_over_y(epsilon_graph, degree_matrix, y_0)
-        y_0[0] = y_0_0
-        y_0[1] = y_0_1
-        y_0[2] = y_0_2
+        y_0[r_0] = y_0_0
+        y_0[r_1] = y_0_1
+        y_0[r_2] = y_0_2
+
+    i = 0
+    f_nb = 0
+    for line in y_0:
+        am = np.argmax(line)
+        if am != C[i]:
+            f_nb += 1
+        print("Line: {} - {} - {}".format(line, am, C[i]))
+        i += 1
+
+    print("Nb false : {}".format(f_nb))
 
 if __name__ == '__main__':
     X,C = load_iris_data()
