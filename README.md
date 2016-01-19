@@ -18,4 +18,22 @@
 
 # Utilisation
 
-```python2.7 main.py <k>```
+```
+python2.7 main.py <k> <epsilon> <sigma>
+```
+
+## Exemple
+
+```
+> python2.7 main.py 15 0.5 1.0
+k : 15
+epsilon : 0.5
+sigma : 1.0
+Class 0 : 7 learned
+Class 1 : 3 learned
+Class 2 : 5 learned
+Nb false : 3
+	Class 0 : 0 errors
+	Class 1 : 2 errors
+	Class 2 : 1 errors
+```

@@ -20,7 +20,7 @@ def load_iris_data():
 
     return (X, C)
 
-def similarity(xi, xj, sigma=1):
+def similarity(xi, xj, sigma):
     """
     Donne la similarité entre deux données.
     """
@@ -44,7 +44,7 @@ def construct_degree_matrix(epsilon_graph):
 
     return degree_matrix
 
-def construct_epsilon_graph(X, epsilon = 0.5):
+def construct_epsilon_graph(X, epsilon, sigma):
     """
     Construit l'epsilon-graph associé aux données de l'IRIS
     """
@@ -55,7 +55,7 @@ def construct_epsilon_graph(X, epsilon = 0.5):
 
     for i, xi in enumerate(X):
         for j, xj in enumerate(X):
-            sim = similarity(xi, xj)
+            sim = similarity(xi, xj, sigma)
             if sim > epsilon:
                 epsilon_graph[i,j] = sim
             else:
@@ -138,11 +138,14 @@ def evaluate(y_0, C):
             f_nb += 1
             errors[C[i]] += 1
 
-    print("Nb false : {}".format(f_nb))
+    print("")
+    print("RESULTS...")
+    print("*"*80)
     for i, error in enumerate(errors):
-        print("\tClass {} : {} errors".format(i, error))
+        print("Class {} : {} errors".format(i, error))
+    print("*"*80)
 
-def iterative_harmonic_algorithm(X, C, k):
+def iterative_harmonic_algorithm(X, C, k, epsilon, sigma):
     """
     Fonction permettant de faire tourner l'algorithme itératif harmonique, afin de prédire les labels inconnus
     """
@@ -150,7 +153,7 @@ def iterative_harmonic_algorithm(X, C, k):
     global r
 
     # Construction de l'epsilon-graph
-    epsilon_graph = construct_epsilon_graph(X)
+    epsilon_graph = construct_epsilon_graph(X, epsilon, sigma)
     # Calcul de la matrice des degrés
     degree_matrix = construct_degree_matrix(epsilon_graph)
     # Choix de 3 points aléatoires -> new_X
@@ -167,6 +170,13 @@ def iterative_harmonic_algorithm(X, C, k):
 
 if __name__ == '__main__':
     k = int(sys.argv[1])
-    print("k : {}".format(k))
+    epsilon = float(sys.argv[2])
+    sigma = float(sys.argv[3])
+    print("*"*80)
+    print("* PARAMETERS...")
+    print("* k : {}".format(k))
+    print("* epsilon: {}".format(epsilon))
+    print("* sigma: {}".format(sigma))
+    print("*"*80)
     X,C = load_iris_data()
-    iterative_harmonic_algorithm(X,C,k)
+    iterative_harmonic_algorithm(X,C,k,epsilon,sigma)
