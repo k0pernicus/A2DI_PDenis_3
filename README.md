@@ -15,3 +15,7 @@
 	*	Que se passe-t-il lorsque l'on augmente le nombre de labels connus?
 *	En quoi le choix du epsilon influence l'algorithme?
 *	Boire un coca, et se mater Mr Robot (encore).
+
+# Utilisation
+
+```python2.7 main.py <k>```
